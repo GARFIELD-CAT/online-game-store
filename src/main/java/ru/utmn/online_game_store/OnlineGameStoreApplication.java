@@ -10,5 +10,4 @@ public class OnlineGameStoreApplication {
 		SpringApplication.run(OnlineGameStoreApplication.class, args);
         System.out.println("Ok");
 	}
-
 }
