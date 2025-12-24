@@ -12,14 +12,14 @@ import java.util.Optional;
 @Service
 public class GameService {
     @Autowired
-    private GameRepository repository;
+    private GameRepository gameRepository;
 
     public Iterable<Game> getAll() {
-        return repository.findAll();
+        return gameRepository.findAll();
     }
 
     public Optional<Game> getOne(Integer id) {
-        Optional<Game> game = repository.findById(id);
+        Optional<Game> game = gameRepository.findById(id);
 
         if (game.isPresent()){
             return game;
@@ -32,13 +32,13 @@ public class GameService {
     }
 
     public Game create(Game game) {
-        if (repository.existsById(game.getId()))
+        if (gameRepository.existsById(game.getId()))
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, String.format("Игра с id=%s создана ранее", game.getId())
             );
 
         game.setId(null);
 
-        return repository.save(game);
+        return gameRepository.save(game);
     }
 }

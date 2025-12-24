@@ -28,7 +28,7 @@ public class User {
     @Column(nullable = false, length = 128, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 64)
     private String password;
 
     @Column(nullable = false)
@@ -49,12 +49,13 @@ public class User {
     @Column(nullable = false)
     private boolean enabled = true;
 
-    public User(String firstName, String lastName, String email, String password, LocalDate birthday) {
+    public User(String firstName, String lastName, String email, String password, LocalDate birthday, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.birthday = birthday;
+        this.role = role;
         this.age = Period.between(birthday, LocalDate.now()).getYears();
     }
 
