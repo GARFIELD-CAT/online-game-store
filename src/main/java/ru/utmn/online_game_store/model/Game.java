@@ -49,4 +49,12 @@ public class Game {
 
     @ManyToMany(mappedBy = "games")
     private List<GameOrder> orders;
+
+    public Boolean getIsAvailable(){
+        return isAvailable;
+    }
+
+    public void setIsAvailable(Boolean value){
+        this.isAvailable = value;
+    }
 }
