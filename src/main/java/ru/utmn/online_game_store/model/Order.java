@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -30,4 +31,12 @@ public class Order {
     void onCreate() {
         created = LocalDateTime.now();
     }
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToMany()
+    @JoinColumn(name = "game_ids", nullable = false)
+    private List<Game> games;
 }
