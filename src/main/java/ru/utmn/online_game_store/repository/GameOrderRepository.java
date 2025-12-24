@@ -4,6 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.utmn.online_game_store.model.GameOrder;
 
+import java.util.List;
+
 @Repository
 public interface GameOrderRepository extends JpaRepository<GameOrder, Integer> {
+    List<GameOrder> findByUserId(Integer userId);
 }

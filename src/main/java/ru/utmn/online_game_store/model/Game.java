@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -48,11 +47,6 @@ public class Game {
     @Column(nullable = false)
     private String ageRating = AgeRating.TWELWE.getValue();
 
-    @ManyToMany()
-    @JoinTable(
-        name = "game_orders",
-        joinColumns = @JoinColumn(name = "game_id"),
-        inverseJoinColumns = @JoinColumn(name = "order_id")
-    )
-    private List<GameOrder> orders = new ArrayList<>();
+    @ManyToMany(mappedBy = "games")
+    private List<GameOrder> orders;
 }

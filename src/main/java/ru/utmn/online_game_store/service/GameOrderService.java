@@ -44,18 +44,19 @@ public class GameOrderService {
     public GameOrder create(GameOrderCreateRequestBody body) {
         User user = jpaUserDetailsService.getOne(body.getUserId());
         Set<Game> games = new HashSet<>();
-        double totalAmount = 0;
 
         for (Integer game_id : body.getGame_ids()) {
             Game game = gameService.getOne(game_id);
             games.add(game);
-            totalAmount += game.getPrice();
         }
 
         GameOrder order = new GameOrder();
         order.setGames(games.stream().toList());
         order.setUser(user);
-        order.setTotalAmount(totalAmount);
+        order.setTotalAmount(
+                games.stream().mapToDouble(
+                        Game::getPrice).sum()
+        );
 
         return gameOrderRepository.save(order);
     }
@@ -87,5 +88,9 @@ public class GameOrderService {
         gameOrderRepository.save(order);
 
         return order;
+    }
+
+    public Iterable<GameOrder> getAllByUserId(Integer userId) {
+        return gameOrderRepository.findByUserId(userId);
     }
 }

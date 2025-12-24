@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Data
@@ -32,8 +30,13 @@ public class GameOrder {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany(mappedBy = "orders")
-    private List<Game> games = new ArrayList<>();
+    @ManyToMany()
+    @JoinTable(
+            name = "game_orders",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id")
+    )
+    private List<Game> games;
 
     @PrePersist
     void onCreate() {

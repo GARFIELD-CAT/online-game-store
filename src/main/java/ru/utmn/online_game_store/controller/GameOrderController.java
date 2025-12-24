@@ -43,8 +43,16 @@ public class GameOrderController {
 
     @Operation(summary = "Возвращает все записи")
     @GetMapping
-    public ResponseEntity<Object> getAll() {
-        Iterable<GameOrder> orders = gameOrderService.getAll();
+    public ResponseEntity<Object> getAll(
+            @RequestParam(required = false) Integer userId
+    ) {
+        Iterable<GameOrder> orders;
+
+        if (userId != null) {
+            orders = gameOrderService.getAllByUserId(userId);
+        } else {
+            orders = gameOrderService.getAll();
+        }
 
         return ResponseEntity.ok(orders);
     }
