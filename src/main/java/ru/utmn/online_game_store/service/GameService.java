@@ -18,11 +18,11 @@ public class GameService {
         return gameRepository.findAll();
     }
 
-    public Optional<Game> getOne(Integer id) {
+    public Game getOne(Integer id) {
         Optional<Game> game = gameRepository.findById(id);
 
         if (game.isPresent()){
-            return game;
+            return game.get();
         }
         else {
             throw new ResponseStatusException(
