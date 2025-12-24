@@ -1,12 +1,18 @@
 package ru.utmn.online_game_store.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +47,12 @@ public class Game {
 
     @Column(nullable = false)
     private String ageRating = AgeRating.TWELWE.getValue();
+
+    @ManyToMany()
+    @JoinTable(
+        name = "game_orders",
+        joinColumns = @JoinColumn(name = "game_id"),
+        inverseJoinColumns = @JoinColumn(name = "order_id")
+    )
+    private List<GameOrder> orders = new ArrayList<>();
 }

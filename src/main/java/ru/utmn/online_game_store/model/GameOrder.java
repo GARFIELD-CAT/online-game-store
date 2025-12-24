@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class GameOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -27,16 +28,15 @@ public class Order {
     @Column(nullable = false)
     private double totalAmount;
 
-    @PrePersist
-    void onCreate() {
-        created = LocalDateTime.now();
-    }
-
     @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToMany()
-    @JoinColumn(name = "game_ids", nullable = false)
-    private List<Game> games;
+    @ManyToMany(mappedBy = "orders")
+    private List<Game> games = new ArrayList<>();
+
+    @PrePersist
+    void onCreate() {
+        created = LocalDateTime.now();
+    }
 }

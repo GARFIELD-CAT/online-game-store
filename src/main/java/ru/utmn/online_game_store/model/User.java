@@ -13,6 +13,7 @@ import java.time.Period;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "shop_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
