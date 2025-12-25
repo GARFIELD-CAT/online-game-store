@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.utmn.online_game_store.model.Game;
 import ru.utmn.online_game_store.model.GameOrder;
+import ru.utmn.online_game_store.model.OrderStatus;
 import ru.utmn.online_game_store.model.User;
 import ru.utmn.online_game_store.model.dto.GameOrderCreateRequestBody;
 import ru.utmn.online_game_store.model.dto.GameOrderUpdateRequestBody;
@@ -76,9 +77,16 @@ public class GameOrderService {
                         HttpStatus.NOT_FOUND, String.format("Заказ с id=%d не существует", body.getOrder_id())
                 )
         );
+        String status = body.getStatus();
 
-        if (body.getStatus() != null) {
-            order.setStatus(body.getStatus());
+        if (status != null) {
+            if (!OrderStatus.canTransitionTo(order.getStatus(), status))
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        String.format("Текущий статус заказа: %s не может быть изменен на %s", order.getStatus(), status)
+                );
+
+            order.setStatus(status);
         }
 
         if (body.getTotalAmount() != null) {

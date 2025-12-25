@@ -7,8 +7,9 @@ import java.util.List;
 
 public class Constants {
         public static final List<String> ORDER_STATUSES = Arrays.asList(
-                OrderStatus.FAILED.getValue(),
                 OrderStatus.PENDING.getValue(),
-                OrderStatus.SUCCESS.getValue()
+                OrderStatus.PAID.getValue(),
+                OrderStatus.SUCCESS.getValue(),
+                OrderStatus.FAILED.getValue()
         );
 }

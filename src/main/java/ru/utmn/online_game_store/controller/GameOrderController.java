@@ -81,7 +81,7 @@ public class GameOrderController {
             if (!ORDER_STATUSES.contains(status)) {
                 throw  new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
-                        String.format("Заказ может содержать только такие статусы: %s, %s и %s", ORDER_STATUSES.toArray())
+                        String.format("Заказ может содержать только такие статусы: %s, %s, %s и %s", ORDER_STATUSES.toArray())
                 );
             }
         }
