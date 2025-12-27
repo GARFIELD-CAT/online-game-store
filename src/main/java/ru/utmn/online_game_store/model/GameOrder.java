@@ -33,8 +33,8 @@ public class GameOrder {
     @ManyToMany()
     @JoinTable(
             name = "game_orders",
-            joinColumns = @JoinColumn(name = "game_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id")
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
     )
     private List<Game> games;
 

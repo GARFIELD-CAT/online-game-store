@@ -1,4 +1,4 @@
-package ru.utmn.online_game_store.controller;
+package ru.utmn.online_game_store.controller.external;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.utmn.online_game_store.model.dto.PaymentRequestBody;
-import ru.utmn.online_game_store.service.PaymentService;
+import ru.utmn.online_game_store.service.external.PaymentService;
 
 //По сути Mock над внешним сервисом оплаты
 @RestController

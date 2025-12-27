@@ -1,4 +1,4 @@
-package ru.utmn.online_game_store.service;
+package ru.utmn.online_game_store.service.external;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +9,12 @@ import ru.utmn.online_game_store.model.GameOrder;
 import ru.utmn.online_game_store.model.OrderStatus;
 import ru.utmn.online_game_store.model.dto.PaymentRequestBody;
 import ru.utmn.online_game_store.model.external.Payment;
-import ru.utmn.online_game_store.repository.PaymentRepository;
+import ru.utmn.online_game_store.repository.external.PaymentRepository;
+import ru.utmn.online_game_store.service.GameOrderService;
 
 import java.util.Optional;
 
-//По сути Mock над внешним сервисом оплаты
+//По сути Mock над внешним api сервиса оплаты
 @Service
 public class PaymentService {
     @Autowired

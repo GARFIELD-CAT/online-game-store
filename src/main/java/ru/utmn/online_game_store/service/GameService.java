@@ -45,7 +45,6 @@ public class GameService {
         return gameRepository.save(game);
     }
 
-
     public GameDto castToDtoResponse(Game game) {
         GameDto dto = new GameDto();
 

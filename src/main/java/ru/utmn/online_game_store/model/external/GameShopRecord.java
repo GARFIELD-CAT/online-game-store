@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 import ru.utmn.online_game_store.model.GameOrder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Payment {
+public class GameShopRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -21,11 +22,11 @@ public class Payment {
     @JoinColumn(name = "order_id", nullable = false)
     private GameOrder order;
 
-    @Column(nullable = false)
-    private LocalDateTime created;
+    @OneToMany(mappedBy = "gameShopRecord")
+    private List<GameShopKey> keys;
 
     @Column(nullable = false)
-    private String currency = PaymentCurrency.RUB.getValue();
+    private LocalDateTime created;
 
     @PrePersist
     void onCreate() {

@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.utmn.online_game_store.model.GameOrder;
 import ru.utmn.online_game_store.model.dto.GameOrderCreateRequestBody;
+import ru.utmn.online_game_store.model.dto.GameOrderDto;
 import ru.utmn.online_game_store.model.dto.GameOrderUpdateRequestBody;
 import ru.utmn.online_game_store.service.GameOrderService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static ru.utmn.online_game_store.Constants.ORDER_STATUSES;
 
@@ -25,20 +29,20 @@ public class GameOrderController {
 
     @Operation(summary = "Возвращает одну запись по ее id")
     @GetMapping("/{id}")
-    public GameOrder getOne(
+    public GameOrderDto getOne(
             @PathVariable("id") Integer id
     ) {
-        return gameOrderService.getOne(id);
+        return gameOrderService.castToDtoResponse(gameOrderService.getOne(id));
     }
 
     @Operation(summary = "Создает новую запись")
     @PostMapping
-    public ResponseEntity<GameOrder> add(
+    public ResponseEntity<GameOrderDto> add(
             @Valid @RequestBody GameOrderCreateRequestBody body
     ) {
         GameOrder entity = gameOrderService.create(body);
 
-        return new ResponseEntity<>(entity, HttpStatus.CREATED);
+        return new ResponseEntity<>(gameOrderService.castToDtoResponse(entity), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Возвращает все записи")
@@ -46,15 +50,21 @@ public class GameOrderController {
     public ResponseEntity<Object> getAll(
             @RequestParam(required = false) Integer userId
     ) {
-        Iterable<GameOrder> orders;
+        List<GameOrder> rawOrders;
 
         if (userId != null) {
-            orders = gameOrderService.getAllByUserId(userId);
+            rawOrders = gameOrderService.getAllByUserId(userId);
         } else {
-            orders = gameOrderService.getAll();
+            rawOrders = gameOrderService.getAll();
         }
 
-        return ResponseEntity.ok(orders);
+        List<GameOrderDto> gameOrders = new ArrayList<>(rawOrders.size());
+
+        for (GameOrder order : rawOrders) {
+            gameOrders.add(gameOrderService.castToDtoResponse(order));
+        }
+
+        return ResponseEntity.ok(gameOrders);
     }
 
     @Operation(summary = "Удаляет одну запись по ее id")
@@ -88,6 +98,6 @@ public class GameOrderController {
 
         GameOrder entity = gameOrderService.update(body);
 
-        return new ResponseEntity<>(entity, HttpStatus.OK);
+        return new ResponseEntity<>(gameOrderService.castToDtoResponse(entity), HttpStatus.OK);
     }
 }

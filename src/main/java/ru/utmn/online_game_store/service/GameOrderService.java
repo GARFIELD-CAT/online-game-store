@@ -8,7 +8,9 @@ import ru.utmn.online_game_store.model.Game;
 import ru.utmn.online_game_store.model.GameOrder;
 import ru.utmn.online_game_store.model.OrderStatus;
 import ru.utmn.online_game_store.model.User;
+import ru.utmn.online_game_store.model.dto.GameDto;
 import ru.utmn.online_game_store.model.dto.GameOrderCreateRequestBody;
+import ru.utmn.online_game_store.model.dto.GameOrderDto;
 import ru.utmn.online_game_store.model.dto.GameOrderUpdateRequestBody;
 import ru.utmn.online_game_store.repository.GameOrderRepository;
 
@@ -25,7 +27,7 @@ public class GameOrderService {
     @Autowired
     private GameService gameService;
 
-    public Iterable<GameOrder> getAll() {
+    public List<GameOrder> getAll() {
         return gameOrderRepository.findAll();
     }
 
@@ -98,7 +100,25 @@ public class GameOrderService {
         return order;
     }
 
-    public Iterable<GameOrder> getAllByUserId(Integer userId) {
+    public List<GameOrder> getAllByUserId(Integer userId) {
         return gameOrderRepository.findByUserId(userId);
+    }
+
+    public GameOrderDto castToDtoResponse(GameOrder order) {
+        GameOrderDto dto = new GameOrderDto();
+        List<Integer> games = new ArrayList<>();
+
+        for (Game game :order.getGames()){
+            games.add(game.getId());
+        }
+
+        dto.setId(order.getId());
+        dto.setCreated(order.getCreated());
+        dto.setStatus(order.getStatus());
+        dto.setTotalAmount(order.getTotalAmount());
+        dto.setUser_id(order.getUser().getId());
+        dto.setGame_ids(games);
+
+        return dto;
     }
 }

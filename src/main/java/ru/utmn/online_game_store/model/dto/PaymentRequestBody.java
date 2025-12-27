@@ -2,6 +2,7 @@ package ru.utmn.online_game_store.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,13 @@ public class PaymentRequestBody {
     )
     @NotNull(message = "Срок действия карты должен быть указан.")
     private String cardValidityPeriod;
+
+    @Schema(requiredMode = REQUIRED,
+            description = "CVC код карты"
+    )
+    @NotNull(message = "CVC код карты должен быть указан.")
+    @Size(min = 3, message = "CVC код карты состоит из 3 цифр")
+    private String cvcCode;
 
     @Schema(description = "Дата оплаты")
     private LocalDateTime paymentDate;
