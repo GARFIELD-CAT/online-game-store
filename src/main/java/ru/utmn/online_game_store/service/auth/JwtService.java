@@ -12,8 +12,8 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    private final String SECRET_KEY = "your_secret_key"; // Используйте безопасный ключ
-    private final long EXPIRATION_TIME = 3600000; // 1 час
+    private final String SECRET_KEY = "?:AGHJgsayusjKS;`11111koqjwi`1!@Y^@RTYG*@Y&*T@UHoijq/.,bgdxza{}O"; // Используйте безопасный ключ
+    private final long EXPIRATION_TIME = 86400000; // 24 часа
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
