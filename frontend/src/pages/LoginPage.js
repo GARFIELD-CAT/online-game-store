@@ -3,24 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../store/actions";
-import { useAuth } from "../utils/AuthContext";
 
 const GamePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { login } = useAuth();
-
-  useEffect(() => {
-    if (localStorage.getItem("jwtToken")) {
-      login();
-    }
-  }, []);
 
   const handleSubmit = (data) => {
     const { email, password } = data;
 
     loginUser(dispatch, email, password);
-    login();
     navigate("/");
   };
 
