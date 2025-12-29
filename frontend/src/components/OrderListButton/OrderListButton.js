@@ -1,18 +1,18 @@
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
-const BackButton = () => {
+const OrderListButton = () => {
   const navigate = useNavigate();
 
   return (
     <Button
       type="primary"
       ghost
-      onClick={() => navigate("/")}
+      onClick={() => navigate("/order-list")}
       style={{ margin: "18px 10px 12px 10px" }}
     >
-      На главную
+      Список заказов
     </Button>
   );
 };
-export default BackButton;
+export default OrderListButton;

@@ -1,7 +1,21 @@
-import { Layout, Typography } from "antd";
+import { Button, Layout, Row, Typography } from "antd";
+import { useDispatch } from "react-redux";
+import { getTokenAction } from "../../store/gameReducer";
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../store/actions";
 const { Title } = Typography;
 
 const Header = ({ children }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.clear();
+    dispatch(getTokenAction(null));
+    logoutUser(dispatch);
+    navigate("/login");
+  };
+
   return (
     <Layout.Header
       style={{
@@ -22,9 +36,18 @@ const Header = ({ children }) => {
           marginLeft: 20,
         }}
       >
-        Free to play games
+        Онлайн-магазин игр
       </Title>
-      {children}
+      <Row>
+        {children}
+        <Button
+          onClick={logout}
+          style={{ margin: "18px 10px 12px 10px" }}
+          type="primary"
+        >
+          Выйти
+        </Button>
+      </Row>
     </Layout.Header>
   );
 };

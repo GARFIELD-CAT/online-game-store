@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GameShopKeyDto {
+public class GameOrderGameDto {
     private Integer id;
-    private Integer gameId;
-    private String gameName;
-    private String gameKey;
+    private String title;
 }

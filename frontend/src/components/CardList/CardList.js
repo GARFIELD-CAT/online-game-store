@@ -23,48 +23,69 @@ const CardList = ({ data, error }) => {
         }}
         dataSource={data}
         renderItem={(item) => (
-          <List.Item
-            key={item.id}
-            style={{display: "flex"}}
-           >
-            <Checkbox style={{marginRight: "20px"}} value={item.id}/>
-              <Card
-                bodyStyle={{ padding: "10px 20px" }}
-                style={{ background: "#00213A", border: "none" }}
-                cover={<img alt={item.title} src={item.thumbnail} />}
+          <List.Item key={item.id} style={{ display: "flex" }}>
+            <Checkbox style={{ marginRight: "20px" }} value={item.id} />
+            <Card
+              bodyStyle={{ padding: "10px 20px" }}
+              style={{ background: "#00213A", border: "none" }}
+              // cover={<img alt={item.title} src={item.thumbnail} />}
+            >
+              <Title
+                level={4}
+                style={{ color: "#A8A8A8", textAlign: "start", margin: 0 }}
               >
-                <Title
-                  level={4}
-                  style={{ color: "#A8A8A8", textAlign: "start", margin: 0 }}
+                {item.title}
+              </Title>
+              <Descriptions
+                layout="vertical"
+                column={2}
+                contentStyle={{ color: "#DCDCDC", fontSize: 12 }}
+                labelStyle={{ color: "#2B74AC", fontSize: 13 }}
+              >
+                <Descriptions.Item
+                  label="Жанр"
+                  style={{ padding: 0, height: 10 }}
                 >
-                  {item.title}
-                </Title>
-                <Descriptions
-                  layout="vertical"
-                  column={2}
-                  contentStyle={{ color: "#DCDCDC", fontSize: 12 }}
-                  labelStyle={{ color: "#2B74AC", fontSize: 13 }}
+                  {item.genre}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label="Дата выхода"
+                  style={{ padding: 0, height: 10 }}
                 >
-                  <Descriptions.Item
-                    label="Genre"
-                    style={{ padding: 0, height: 10 }}
-                  >
-                    {item.genre}
-                  </Descriptions.Item>
-                  <Descriptions.Item
-                    label="Release Date"
-                    style={{ padding: 0, height: 10 }}
-                  >
-                    {formateDate(item.release_date)}
-                  </Descriptions.Item>
-                  <Descriptions.Item
-                    label="Publisher"
-                    style={{ padding: 0, height: 10, margin: 5 }}
-                  >
-                    {item.publisher}
-                  </Descriptions.Item>
-                </Descriptions>
-              </Card>
+                  {formateDate(item.releaseDate)}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label="Разработчик"
+                  style={{ padding: 0, height: 10, margin: 5 }}
+                >
+                  {item.developerName}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label="Плафторма"
+                  style={{ padding: 0, height: 10, margin: 5 }}
+                >
+                  {item.platform}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label="Средний рейтинг"
+                  style={{ padding: 0, height: 10, margin: 5 }}
+                >
+                  {item.averageUserRating}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label="Возратсной рейтинг"
+                  style={{ padding: 0, height: 10, margin: 5 }}
+                >
+                  {item.ageRating}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label="Цена"
+                  style={{ padding: 0, height: 10, margin: 5 }}
+                >
+                  {item.price}
+                </Descriptions.Item>
+              </Descriptions>
+            </Card>
           </List.Item>
         )}
       />

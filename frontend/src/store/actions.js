@@ -17,15 +17,15 @@ export const loginUser = (dispatch, email, password) => {
   Api.loginUser(email, password)
     .then((res) => {
       dispatch(getTokenAction(res.token));
-      localStorage.setItem('jwtToken', res.token)
+      localStorage.setItem("jwtToken", res.token);
     })
     .then(() => {
       dispatch(setIsLoadingAction(false));
     })
     .catch((err) => {
-        dispatch(setError(true));
-        console.error(err);
-        dispatch(setIsLoadingAction(false));
+      dispatch(setError(true));
+      console.error(err);
+      dispatch(setIsLoadingAction(false));
     });
 };
 
@@ -63,9 +63,9 @@ export const createOrder = (dispatch, data) => {
       dispatch(setIsLoadingAction(false));
     })
     .catch((err) => {
-        dispatch(setError(true));
-        console.error(err);
-        dispatch(setIsLoadingAction(false));
+      dispatch(setError(true));
+      console.error(err);
+      dispatch(setIsLoadingAction(false));
     });
 };
 
@@ -76,24 +76,39 @@ export const createPayment = (dispatch, data) => {
       dispatch(setIsLoadingAction(false));
     })
     .catch((err) => {
-        dispatch(setError(true));
-        console.error(err);
-        dispatch(setIsLoadingAction(false));
+      dispatch(setError(true));
+      console.error(err);
+      dispatch(setIsLoadingAction(false));
     });
 };
 
 export const getOrder = (dispatch, id) => {
   dispatch(setIsLoadingAction(true));
   Api.getOrder(id)
-  .then((order) => {
-        dispatch(getOrderAction(order));
-      })
+    .then((order) => {
+      dispatch(getOrderAction(order));
+    })
     .then(() => {
       dispatch(setIsLoadingAction(false));
     })
     .catch((err) => {
-        dispatch(setError(true));
-        console.error(err);
-        dispatch(setIsLoadingAction(false));
+      dispatch(setError(true));
+      console.error(err);
+      dispatch(setIsLoadingAction(false));
+    });
+};
+
+export const logoutUser = (dispatch) => {
+  dispatch(setIsLoadingAction(true));
+  dispatch(setError(false));
+
+  Api.logoutUser()
+    .then(() => {
+      dispatch(setIsLoadingAction(false));
+    })
+    .catch((err) => {
+      dispatch(setError(true));
+      console.error(err);
+      dispatch(setIsLoadingAction(false));
     });
 };

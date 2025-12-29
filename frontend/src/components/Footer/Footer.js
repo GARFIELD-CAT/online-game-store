@@ -12,7 +12,7 @@ const Footer = () => {
       }}
     >
       <Paragraph style={{ color: "#4E83AC", margin: "0 20px" }}>
-        Made by Nadya Sadovskaya 2023
+        Сделано Денисом Ягуновым 2025
       </Paragraph>
     </Layout.Footer>
   );

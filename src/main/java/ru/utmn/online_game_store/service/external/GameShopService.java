@@ -8,10 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ru.utmn.online_game_store.model.Game;
 import ru.utmn.online_game_store.model.GameOrder;
 import ru.utmn.online_game_store.model.OrderStatus;
-import ru.utmn.online_game_store.model.dto.GameOrderDto;
-import ru.utmn.online_game_store.model.dto.GameShopKeyDto;
-import ru.utmn.online_game_store.model.dto.GameShopRecordDto;
-import ru.utmn.online_game_store.model.dto.GameShopRequestBody;
+import ru.utmn.online_game_store.model.dto.*;
 import ru.utmn.online_game_store.model.external.GameShopKey;
 import ru.utmn.online_game_store.model.external.GameShopRecord;
 import ru.utmn.online_game_store.repository.external.GameShopKeysRepository;
@@ -23,7 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-//По сути Mock над внешним api магазина
+//По сути Mock над внешним api магазина и логика обновления статуса заказа
 @Service
 public class GameShopService {
     @Autowired
@@ -36,21 +33,23 @@ public class GameShopService {
     public GameShopRecord getGameKeysForGameOrder(@Valid GameShopRequestBody body) {
         GameOrder order = gameOrderService.getOne(body.getOrder_id());
 
-        // Должна быть проверка еще, что переданный заказ принадлжеит текущему пользователю
+        // Если уже были получены ключи для заказа, то отдаем их, а не создаем новые
+        if (Objects.equals(order.getStatus(), OrderStatus.SUCCESS.getValue())) {
+            Optional<GameShopRecord> oldGameShopRecord = gameShopRecordRepository.findByOrderId(order.getId());
+
+            if (oldGameShopRecord.isPresent()){
+                return oldGameShopRecord.get();
+            }
+        }
+
+        // Должна быть проверка еще, что переданный заказ принадлежит текущему пользователю
         if (!Objects.equals(order.getStatus(), OrderStatus.PAID.getValue())) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     String.format(
-                            "Заказ с id=%s должен иметь статус \"PAID\" - оплачен. Текущий статус заказа: %s", order.getId(), order.getStatus()
+                            "Заказ с id=%s должен иметь статус 'PAID' - оплачен. Текущий статус заказа: %s", order.getId(), order.getStatus()
                     )
             );
-        }
-
-        // Если уже были получены ключи для заказа, то отдаем их, а не создаем новые
-        Optional<GameShopRecord> oldGameShopRecord = gameShopRecordRepository.findByOrderId(order.getId());
-
-        if (oldGameShopRecord.isPresent()){
-            return oldGameShopRecord.get();
         }
 
         // Создаем новые ключи
@@ -64,6 +63,7 @@ public class GameShopService {
         for (Game game : order.getGames()) {
             GameShopKey gameKey = new GameShopKey();
             gameKey.setGameId(game.getId());
+            gameKey.setGameName(game.getTitle());
             gameKey.setGameShopRecord(newGameShopRecord);
             gameShopKeys.add(gameKey);
         }
@@ -71,6 +71,12 @@ public class GameShopService {
         gameShopKeysRepository.saveAll(gameShopKeys);
         newGameShopRecord.setKeys(gameShopKeys);
         gameShopRecordRepository.save(newGameShopRecord);
+
+        // Обновление статуса заказа
+        GameOrderUpdateRequestBody gameOrderUpdateRequestBody = new GameOrderUpdateRequestBody();
+        gameOrderUpdateRequestBody.setOrder_id(order.getId());
+        gameOrderUpdateRequestBody.setStatus(OrderStatus.SUCCESS.getValue());
+        gameOrderService.update(gameOrderUpdateRequestBody);
 
         return newGameShopRecord;
     }
@@ -84,6 +90,7 @@ public class GameShopService {
             gameShopKeyDto.setId(key.getId());
             gameShopKeyDto.setGameId(key.getGameId());
             gameShopKeyDto.setGameKey(key.getGameKey());
+            gameShopKeyDto.setGameName(key.getGameName());
 
             gameKeys.add(gameShopKeyDto);
         }

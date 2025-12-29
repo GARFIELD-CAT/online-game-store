@@ -8,9 +8,9 @@ import ru.utmn.online_game_store.model.Game;
 import ru.utmn.online_game_store.model.GameOrder;
 import ru.utmn.online_game_store.model.OrderStatus;
 import ru.utmn.online_game_store.model.User;
-import ru.utmn.online_game_store.model.dto.GameDto;
 import ru.utmn.online_game_store.model.dto.GameOrderCreateRequestBody;
 import ru.utmn.online_game_store.model.dto.GameOrderDto;
+import ru.utmn.online_game_store.model.dto.GameOrderGameDto;
 import ru.utmn.online_game_store.model.dto.GameOrderUpdateRequestBody;
 import ru.utmn.online_game_store.repository.GameOrderRepository;
 
@@ -43,6 +43,29 @@ public class GameOrderService {
             );
         }
     }
+
+//    public GameOrder getOne(Integer id) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String email = authentication.getName();
+//        Optional<User> user = jpaUserDetailsService.getByEmail(email);
+//
+//        Optional<GameOrder> gameOrder = gameOrderRepository.findById(id);
+//
+//        if (gameOrder.isPresent() && user.isPresent()){
+//            if (Objects.equals(user.get().getId(), gameOrder.get().getUser().getId())) {
+//                return gameOrder.get();
+//            } else {
+//                throw new ResponseStatusException(
+//                        HttpStatus.NOT_FOUND, String.format("Заказ с id=%s не принадлежит текущему пользователю", id)
+//                );
+//            }
+//        }
+//        else {
+//            throw new ResponseStatusException(
+//                    HttpStatus.NOT_FOUND, String.format("Заказ с id=%s не существует", id)
+//            );
+//        }
+//    }
 
     public GameOrder create(GameOrderCreateRequestBody body) {
         User user = jpaUserDetailsService.getOne(body.getUserId());
@@ -106,10 +129,13 @@ public class GameOrderService {
 
     public GameOrderDto castToDtoResponse(GameOrder order) {
         GameOrderDto dto = new GameOrderDto();
-        List<Integer> games = new ArrayList<>();
+        List<GameOrderGameDto> games = new ArrayList<>();
 
-        for (Game game :order.getGames()){
-            games.add(game.getId());
+        for (Game game : order.getGames()){
+            GameOrderGameDto gameDto = new GameOrderGameDto();
+            gameDto.setId(game.getId());
+            gameDto.setTitle(game.getTitle());
+            games.add(gameDto);
         }
 
         dto.setId(order.getId());
@@ -117,7 +143,7 @@ public class GameOrderService {
         dto.setStatus(order.getStatus());
         dto.setTotalAmount(order.getTotalAmount());
         dto.setUser_id(order.getUser().getId());
-        dto.setGame_ids(games);
+        dto.setGames(games);
 
         return dto;
     }

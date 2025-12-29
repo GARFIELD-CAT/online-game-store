@@ -14,5 +14,5 @@ public class GameOrderDto {
     private String status;
     private double totalAmount;
     private Integer user_id;
-    private List<Integer> game_ids;
+    private List<GameOrderGameDto> games;
 }

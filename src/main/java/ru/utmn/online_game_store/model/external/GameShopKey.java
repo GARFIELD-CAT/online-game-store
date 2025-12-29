@@ -23,6 +23,9 @@ public class GameShopKey {
     @Column(updatable = false)
     private String gameKey;
 
+    @Column(updatable = false)
+    private String gameName;
+
     @ManyToOne()
     @JoinColumn(name = "game_shop_record_id", nullable = false)
     private GameShopRecord gameShopRecord;
