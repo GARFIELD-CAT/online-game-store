@@ -67,25 +67,19 @@ public class GameOrderController {
         return ResponseEntity.ok(gameOrders);
     }
 
-//    @Operation(summary = "Возвращает все записи для текущего пользователя")
-//    @GetMapping
-//    public ResponseEntity<Object> getAllForCurrentUser() {
-//        List<GameOrder> rawOrders;
-//
-//        if (userId != null) {
-//            rawOrders = gameOrderService.getAllByUserId(userId);
-//        } else {
-//            rawOrders = gameOrderService.getAll();
-//        }
-//
-//        List<GameOrderDto> gameOrders = new ArrayList<>(rawOrders.size());
-//
-//        for (GameOrder order : rawOrders) {
-//            gameOrders.add(gameOrderService.castToDtoResponse(order));
-//        }
-//
-//        return ResponseEntity.ok(gameOrders);
-//    }
+    @Operation(summary = "Возвращает все записи для текущего пользователя")
+    @GetMapping("for-current-user")
+    public ResponseEntity<Object> getAllForCurrentUser() {
+        List<GameOrder> rawOrders = gameOrderService.getAllByCurrentUser();
+
+        List<GameOrderDto> gameOrders = new ArrayList<>(rawOrders.size());
+
+        for (GameOrder order : rawOrders) {
+            gameOrders.add(gameOrderService.castToDtoResponse(order));
+        }
+
+        return ResponseEntity.ok(gameOrders);
+    }
 
     @Operation(summary = "Удаляет одну запись по ее id")
     @ResponseStatus(HttpStatus.NO_CONTENT)

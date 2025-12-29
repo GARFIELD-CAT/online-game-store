@@ -31,34 +31,11 @@ public class GameOrderService {
         return gameOrderRepository.findAll();
     }
 
-    public GameOrder getOne(Integer id) {
-        Optional<GameOrder> gameOrder = gameOrderRepository.findById(id);
-
-        if (gameOrder.isPresent()){
-            return gameOrder.get();
-        }
-        else {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, String.format("Заказ с id=%s не существует", id)
-            );
-        }
-    }
-
 //    public GameOrder getOne(Integer id) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String email = authentication.getName();
-//        Optional<User> user = jpaUserDetailsService.getByEmail(email);
-//
 //        Optional<GameOrder> gameOrder = gameOrderRepository.findById(id);
 //
-//        if (gameOrder.isPresent() && user.isPresent()){
-//            if (Objects.equals(user.get().getId(), gameOrder.get().getUser().getId())) {
-//                return gameOrder.get();
-//            } else {
-//                throw new ResponseStatusException(
-//                        HttpStatus.NOT_FOUND, String.format("Заказ с id=%s не принадлежит текущему пользователю", id)
-//                );
-//            }
+//        if (gameOrder.isPresent()){
+//            return gameOrder.get();
 //        }
 //        else {
 //            throw new ResponseStatusException(
@@ -67,8 +44,29 @@ public class GameOrderService {
 //        }
 //    }
 
+    public GameOrder getOne(Integer id) {
+        User user = jpaUserDetailsService.getCurrentUser();
+
+        Optional<GameOrder> gameOrder = gameOrderRepository.findById(id);
+
+        if (gameOrder.isPresent()){
+            if (Objects.equals(user.getId(), gameOrder.get().getUser().getId())) {
+                return gameOrder.get();
+            } else {
+                throw new ResponseStatusException(
+                        HttpStatus.FORBIDDEN, String.format("Заказ с id=%s не принадлежит текущему пользователю", id)
+                );
+            }
+        }
+        else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, String.format("Заказ с id=%s не существует", id)
+            );
+        }
+    }
+
     public GameOrder create(GameOrderCreateRequestBody body) {
-        User user = jpaUserDetailsService.getOne(body.getUserId());
+        User user = jpaUserDetailsService.getCurrentUser();
         Set<Game> games = new HashSet<>();
 
         for (Integer game_id : body.getGame_ids()) {
@@ -121,6 +119,11 @@ public class GameOrderService {
         gameOrderRepository.save(order);
 
         return order;
+    }
+
+    public List<GameOrder> getAllByCurrentUser() {
+        User user = jpaUserDetailsService.getCurrentUser();
+        return gameOrderRepository.findByUserId(user.getId());
     }
 
     public List<GameOrder> getAllByUserId(Integer userId) {

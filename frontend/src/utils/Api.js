@@ -65,7 +65,7 @@ class Api {
     let response = await fetch(`${url}`, {
       method: "POST",
       headers: { ...this._headers, Authorization: `Bearer ${bearerToken}` },
-      body: JSON.stringify({ userId: 2, game_ids: data }),
+      body: JSON.stringify({ game_ids: data }),
     });
 
     if (response.ok) {
@@ -134,7 +134,7 @@ class Api {
   }
 
   async getOrders() {
-    const url = new URL(`${this.baseUrl}api/v1/game-orders`);
+    const url = new URL(`${this.baseUrl}api/v1/game-orders/for-current-user`);
     const bearerToken = localStorage.getItem("jwtToken");
 
     let response = await fetch(`${url}`, {

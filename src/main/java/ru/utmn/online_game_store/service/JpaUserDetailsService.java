@@ -1,6 +1,8 @@
 package ru.utmn.online_game_store.service;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -51,5 +53,13 @@ public class JpaUserDetailsService implements UserDetailsService {
                     HttpStatus.NOT_FOUND, String.format("Пользователь с id=%s не существует", id)
             );
         }
+    }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        Optional<User> user = getByEmail(email);
+
+        return user.get();
     }
 }

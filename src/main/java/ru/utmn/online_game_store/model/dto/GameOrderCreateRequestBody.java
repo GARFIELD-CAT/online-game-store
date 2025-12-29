@@ -15,12 +15,6 @@ import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 @Setter
 public class GameOrderCreateRequestBody {
     @Schema(requiredMode = REQUIRED,
-            description = "Id пользователя"
-    )
-    @NotNull(message = "Id пользователя должен быть указан.")
-    private Integer userId;
-
-    @Schema(requiredMode = REQUIRED,
             description = "Список игр для заказа"
     )
     @Size(min = 1, message = "Хотя бы 1 игра должна быть указана.")
