@@ -24,10 +24,10 @@ public class DataInitializer {
             User user1 = new User(
                     "Илон",
                     "Маск",
-                    "admin@gmail.com",
-                    passwordService.hashPassword("adminPass"),
+                    "mask@gmail.com",
+                    passwordService.hashPassword("maskPass"),
                     LocalDate.of(1990, 1, 1),
-                    "ADMIN"
+                    "USER" // "ADMIN"
             );
             User user2 = new User(
                     "Денис",

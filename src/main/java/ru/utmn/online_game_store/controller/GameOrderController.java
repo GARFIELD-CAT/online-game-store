@@ -45,27 +45,27 @@ public class GameOrderController {
         return new ResponseEntity<>(gameOrderService.castToDtoResponse(entity), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Возвращает все записи")
-    @GetMapping
-    public ResponseEntity<Object> getAll(
-            @RequestParam(required = false) Integer userId
-    ) {
-        List<GameOrder> rawOrders;
-
-        if (userId != null) {
-            rawOrders = gameOrderService.getAllByUserId(userId);
-        } else {
-            rawOrders = gameOrderService.getAll();
-        }
-
-        List<GameOrderDto> gameOrders = new ArrayList<>(rawOrders.size());
-
-        for (GameOrder order : rawOrders) {
-            gameOrders.add(gameOrderService.castToDtoResponse(order));
-        }
-
-        return ResponseEntity.ok(gameOrders);
-    }
+//    @Operation(summary = "Возвращает все записи")
+//    @GetMapping
+//    public ResponseEntity<Object> getAll(
+//            @RequestParam(required = false) Integer userId
+//    ) {
+//        List<GameOrder> rawOrders;
+//
+//        if (userId != null) {
+//            rawOrders = gameOrderService.getAllByUserId(userId);
+//        } else {
+//            rawOrders = gameOrderService.getAll();
+//        }
+//
+//        List<GameOrderDto> gameOrders = new ArrayList<>(rawOrders.size());
+//
+//        for (GameOrder order : rawOrders) {
+//            gameOrders.add(gameOrderService.castToDtoResponse(order));
+//        }
+//
+//        return ResponseEntity.ok(gameOrders);
+//    }
 
     @Operation(summary = "Возвращает все записи для текущего пользователя")
     @GetMapping("for-current-user")
@@ -81,14 +81,14 @@ public class GameOrderController {
         return ResponseEntity.ok(gameOrders);
     }
 
-    @Operation(summary = "Удаляет одну запись по ее id")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
-    public void delete(
-            @PathVariable("id") Integer id
-    ) {
-        gameOrderService.delete(id);
-    }
+//    @Operation(summary = "Удаляет одну запись по ее id")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    @DeleteMapping("/{id}")
+//    public void delete(
+//            @PathVariable("id") Integer id
+//    ) {
+//        gameOrderService.delete(id);
+//    }
 
     @Operation(summary = "Обновляет одну запись по ее id")
     @PutMapping
