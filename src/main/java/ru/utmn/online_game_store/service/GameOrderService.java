@@ -31,19 +31,6 @@ public class GameOrderService {
         return gameOrderRepository.findAll();
     }
 
-//    public GameOrder getOne(Integer id) {
-//        Optional<GameOrder> gameOrder = gameOrderRepository.findById(id);
-//
-//        if (gameOrder.isPresent()){
-//            return gameOrder.get();
-//        }
-//        else {
-//            throw new ResponseStatusException(
-//                    HttpStatus.NOT_FOUND, String.format("Заказ с id=%s не существует", id)
-//            );
-//        }
-//    }
-
     public GameOrder getOne(Integer id) {
         User user = jpaUserDetailsService.getCurrentUser();
 
