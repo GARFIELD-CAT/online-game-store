@@ -26,7 +26,6 @@ const OrderPage = () => {
   const getOrder = async (id) => {
     try {
       const res = await Api.getOrder(id);
-      console.log(res.status);
       setOrderState(res.status);
       setCurrentOrder(res);
     } catch (err) {
@@ -34,8 +33,6 @@ const OrderPage = () => {
       console.error(err);
     }
   };
-
-  console.log(keys);
 
   useEffect(() => {
     getOrder(id);
