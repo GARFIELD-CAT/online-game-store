@@ -165,7 +165,12 @@ const OrderPage = () => {
                 name="cartHolderName"
                 rules={[
                   { required: true, message: "Обязательное поле" },
-                  { max: 100, message: "Имя не должно превышать 100 символов" },
+                  {
+                    max: 100,
+                    message:
+                      "Имя должно состоять только из латинских букв и 1 пробела",
+                    pattern: /^[A-Za-z]+( [A-Za-z]+)+$/,
+                  },
                 ]}
               >
                 <Input />
